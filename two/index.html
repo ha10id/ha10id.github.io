@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Задание 2</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script	src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous">
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<!-- bootbox code -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+	<style type="text/css"></style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="d-flex justify-content-center align-items-center" style="height: 100vh">
+			<div class=" col-md-6">
+				<form>
+					<div class="card" style="">
+						<h4 class="card-header text-center">Задание 2</h4>
+						<div class="card-body">
+							<p >Создать страницу, содержащую скрипт, выводящий все возможные ходы шахматного коня из заданной позиции. В качестве входящего параметра необходимо принимать текущее положение фигуры.</p>
+							<div class="form-group">
+								<label for="firstPos">Исходное положение:</label>
+								<input id="firstPos" class="form-control" type="text" name="firstPos" value="">
+							</div>
+						</div>
+						<div class="card-footer">
+							<button id="btn-add" type="button" class="form-control btn btn-primary">Расчитать</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	// main
+	(function(){
+		// таблица возможных ходов
+		let arr = ['a1','a2','a3','a4','a5','a6','a7',
+		'b1','b2','b3','b4','b5','b6','b7',
+		'c1','c2','c3','c4','c5','c6','c7',
+		'd1','d2','d3','d4','d5','d6','d7',
+		'e1','e2','e3','e4','e5','e6','e7',
+		'f1','f2','f3','f4','f5','f6','f7',
+		'g1','g2','g3','g4','g5','g6','g7',
+		'h1','h2','h3','h4','h5','h6','h7',
+		];
+
+		console.log("Hello, baby! Wanna play with me?")
+		// функция поиска ходов
+		// pos - содержимое input
+		stepFind = function(pos){
+			var answer;
+			var answer_line;
+			var horse;
+			var movesArr = [];
+			var letter = pos[0];
+			var digit = +pos[1];
+			fieldLetter = ['a','b','c','d','e','f','g','h'];
+			fieldDigit = [1, 2, 3, 4, 5, 6, 7, 8];
+			// наполняем массив ходами из таблицы возможных ходов
+			// если в талице нет значения для данного хода то считается,
+			// что конь вышел за границы доски
+			movesArr.push(fieldLetter[fieldLetter.indexOf(letter) - 2] + fieldDigit[digit-2]);
+			movesArr.push(fieldLetter[fieldLetter.indexOf(letter) - 2] + fieldDigit[digit]);
+			movesArr.push(fieldLetter[fieldLetter.indexOf(letter) - 1] + fieldDigit[digit-3]);
+			movesArr.push(fieldLetter[fieldLetter.indexOf(letter) - 1] + fieldDigit[digit+1]);
+			movesArr.push(fieldLetter[fieldLetter.indexOf(letter) + 1] + fieldDigit[digit-3]);
+			movesArr.push(fieldLetter[fieldLetter.indexOf(letter) + 1] + fieldDigit[digit+1]);
+			movesArr.push(fieldLetter[fieldLetter.indexOf(letter) + 2] + fieldDigit[digit-2]);
+			movesArr.push(fieldLetter[fieldLetter.indexOf(letter) + 2] + fieldDigit[digit]);
+			// массив => строка
+			horse = movesArr.join(' ');
+			// оставляем только символы и цифры обозначения клеток
+			answer = horse.match(/[a-h]+\d/g);
+			answer_line = answer.join(' ');
+			// готово
+			bootbox.alert('<p>Возможные варианты хода:</p>' + '<p>' + answer_line + '</p>', function() {
+				console.log('Oh no! You win! Score: ' + answer_line);
+			});
+		}
+		// вешаем событие на клик
+		$('#btn-add').click(function(event){
+			event.preventDefault()
+			stepFind($('#firstPos').val())
+    	})
+	})()
+</script>
+</body>
+</html>
